@@ -6,12 +6,12 @@ import lombok.Data;
 public class Ingredients {
 
     private String name;
-    private int countIngredient;
+    private int count;
     private String measure;
 
-    public Ingredients(String name, int countIngredient, String measure) {
+    public Ingredients(String name, int count, String measure) {
         setName(name);
-        setCountIngredient(countIngredient);
+        setCount(count);
         this.measure = measure;
     }
 
@@ -28,15 +28,15 @@ public class Ingredients {
 
     }
 
-    public int getCountIngredient() {
-        return countIngredient;
+    public int getCount() {
+        return count;
     }
 
-    public void setCountIngredient(int countIngredient) {
-        if (countIngredient >= 0) {
-            this.countIngredient = countIngredient;
+    public void setCount(int count) {
+        if (count >= 0) {
+            this.count = count;
         } else {
-            this.countIngredient = -1;
+            this.count = -1;
         }
     }
 
