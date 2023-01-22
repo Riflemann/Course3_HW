@@ -7,13 +7,13 @@ import java.util.List;
 public class Recipe {
     String name;
     int timeCooking;
-    List<Ingredients> ingredientsList;
+    List<Ingredients> ingredients;
     List<String> steps;
 
-    public Recipe(String name, int timeCooking, List<Ingredients> ingredientsList, List<String> steps) {
+    public Recipe(String name, int timeCooking, List<Ingredients> ingredients, List<String> steps) {
         setName(name);
         setTimeCooking(timeCooking);
-        this.ingredientsList = ingredientsList;
+        this.ingredients = ingredients;
         this.steps = steps;
     }
 
@@ -41,12 +41,12 @@ public class Recipe {
         }
     }
 
-    public List<Ingredients> getIngredientsList() {
-        return ingredientsList;
+    public List<Ingredients> getIngredients() {
+        return ingredients;
     }
 
-    public void setIngredientsList(List<Ingredients> ingredientsList) {
-        this.ingredientsList = ingredientsList;
+    public void setIngredients(List<Ingredients> ingredients) {
+        this.ingredients = ingredients;
     }
 
     public List<String> getSteps() {
