@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.recipe.app.recipeapp.services.FileService;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,7 +15,7 @@ public class FileServiceImpl implements FileService {
     @Value("${path.to.file.folder}")
     private String dataFilePath;
 
-
+    @Override
     public boolean saveToFile(String json, String fileName) {
         try {
             cleanRecipeFile(fileName);
@@ -25,6 +26,7 @@ public class FileServiceImpl implements FileService {
             return false;
         }
     }
+
     @Override
     public String readFile(String fileName) {
         try {
@@ -35,7 +37,8 @@ public class FileServiceImpl implements FileService {
         }
     }
 
-    private boolean cleanRecipeFile(String fileName) {
+    @Override
+    public boolean cleanRecipeFile(String fileName) {
         try {
             Path path = Path.of(dataFilePath, fileName);
             Files.deleteIfExists(path);
@@ -45,6 +48,10 @@ public class FileServiceImpl implements FileService {
             e.printStackTrace();
             return false;
         }
+    }
 
+    @Override
+    public File getFile(String fileName) {
+        return new File(dataFilePath + "/" + fileName);
     }
 }

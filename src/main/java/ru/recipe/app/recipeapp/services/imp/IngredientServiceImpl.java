@@ -19,7 +19,7 @@ public class IngredientServiceImpl implements IngredientService {
 
     static int counter = 0;
 
-    @Value("${name.of.file.two}")
+    @Value("${name.of.ingredient.file}")
     private String ingredientFileName;
 
     final private FileService fileService;

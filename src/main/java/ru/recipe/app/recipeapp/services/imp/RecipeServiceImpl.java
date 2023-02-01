@@ -21,7 +21,7 @@ public class RecipeServiceImpl implements RecipeService {
 
     static int counter = 0;
 
-    @Value("${name.of.file.one}")
+    @Value("${name.of.recipe.file}")
     private String recipeFileName;
 
     public RecipeServiceImpl(FileService fileService) {
