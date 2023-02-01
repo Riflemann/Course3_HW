@@ -1,6 +1,7 @@
 package ru.recipe.app.recipeapp.services;
 
 import java.io.File;
+import java.nio.file.Path;
 
 public interface FileService {
 
@@ -11,4 +12,6 @@ public interface FileService {
     boolean cleanRecipeFile(String fileName);
 
     File getFile(String fileName);
+
+    Path createTempFile(String suffix);
 }
