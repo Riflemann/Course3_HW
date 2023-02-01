@@ -10,5 +10,5 @@ public interface FileService {
 
     boolean cleanRecipeFile(String fileName);
 
-    File getRecipeFile(String fileName);
+    File getFile(String fileName);
 }

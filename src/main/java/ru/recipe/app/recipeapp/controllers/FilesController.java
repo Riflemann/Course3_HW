@@ -17,10 +17,10 @@ import java.io.*;
 @RequestMapping("/files")
 public class FilesController {
 
-    @Value("${name.of.file.one}")
+    @Value("${name.of.recipe.file}")
     private String recipeFileName;
 
-    @Value("${name.of.file.two}")
+    @Value("${name.of.ingredient.file}")
     private String ingredientFileName;
     private final FileService fileService;
 
@@ -30,7 +30,7 @@ public class FilesController {
 
     @GetMapping(value = "/export")
     public ResponseEntity<InputStreamResource> downloadRecipeFile() throws FileNotFoundException {
-        File recipeFile = fileService.getRecipeFile(recipeFileName);
+        File recipeFile = fileService.getFile(recipeFileName);
 
         if (recipeFile.exists()) {
             InputStreamResource resource = new InputStreamResource(new FileInputStream(recipeFile));
@@ -46,7 +46,7 @@ public class FilesController {
 
     @GetMapping(value = "/export/ingredient")
     public ResponseEntity<InputStreamResource> downloadIngredientFile() throws FileNotFoundException {
-        File ingrFile = fileService.getRecipeFile(ingredientFileName);
+        File ingrFile = fileService.getFile(ingredientFileName);
 
         if (ingrFile.exists()) {
             InputStreamResource resource = new InputStreamResource(new FileInputStream(ingrFile));
@@ -63,7 +63,7 @@ public class FilesController {
     @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> upload(@RequestParam MultipartFile file) {
         fileService.cleanRecipeFile(recipeFileName);
-        File recipeFile = fileService.getRecipeFile(recipeFileName);
+        File recipeFile = fileService.getFile(recipeFileName);
         try (FileOutputStream fos = new FileOutputStream(recipeFile)) {
             IOUtils.copy(file.getInputStream(), fos);
             return ResponseEntity.ok().build();

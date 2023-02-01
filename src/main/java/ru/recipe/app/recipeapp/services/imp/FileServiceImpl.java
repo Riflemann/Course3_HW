@@ -51,7 +51,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public File getRecipeFile(String fileName) {
+    public File getFile(String fileName) {
         return new File(dataFilePath + "/" + fileName);
     }
 }
