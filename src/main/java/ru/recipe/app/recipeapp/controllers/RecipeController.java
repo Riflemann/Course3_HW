@@ -71,7 +71,7 @@ public class RecipeController {
             return ResponseEntity.ok()
                     .contentType(MediaType.TEXT_PLAIN)
                     .contentLength(Files.size(path))
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "recipeBook.txt")
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"recipeBook.txt\"")
                     .body(resource);
         } catch (IOException e) {
             e.printStackTrace();
