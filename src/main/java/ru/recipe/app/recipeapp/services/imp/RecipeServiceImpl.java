@@ -76,9 +76,10 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     private void readFromFile() {
-        String json = fileService.readFile(recipeFileName);
         try {
             if (Files.exists(Path.of(recipeFileName))) {
+
+                String json = fileService.readFile(recipeFileName);
                 recipeMap = new ObjectMapper().readValue(json, new TypeReference<HashMap<Integer, Recipe>>() {
                 });
             } else {
