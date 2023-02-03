@@ -5,11 +5,18 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import ru.recipe.app.recipeapp.model.Ingredients;
 import ru.recipe.app.recipeapp.model.Recipe;
 import ru.recipe.app.recipeapp.services.FileService;
 import ru.recipe.app.recipeapp.services.RecipeService;
 
 import javax.annotation.PostConstruct;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 
 @Service
@@ -69,11 +76,17 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     private void readFromFile() {
-        String json = fileService.readFile(recipeFileName);
         try {
-            recipeMap = new ObjectMapper().readValue(json, new TypeReference<HashMap<Integer, Recipe>>() {
-            });
-        } catch (JsonProcessingException e) {
+            if (Files.exists(Path.of(recipeFileName))) {
+
+                String json = fileService.readFile(recipeFileName);
+                recipeMap = new ObjectMapper().readValue(json, new TypeReference<HashMap<Integer, Recipe>>() {
+                });
+            } else {
+                throw new FileNotFoundException();
+            }
+
+        } catch (JsonProcessingException | FileNotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -82,4 +95,35 @@ public class RecipeServiceImpl implements RecipeService {
     private void init() {
         readFromFile();
     }
+
+    @Override
+    public Path createRecipeTxt() throws IOException {
+        Path recipeTxt = fileService.createTempFile("recipeTxt");
+        for (Recipe recipeFromMap : recipeMap.values()) {
+            try (Writer writer = Files.newBufferedWriter(recipeTxt, StandardCharsets.UTF_8)) {
+                StringBuilder ingredient = new StringBuilder();
+                for (Ingredients ingredients : recipeFromMap.getIngredients()) {
+                    ingredient
+                            .append(ingredients.getName())
+                            .append(" ").append(ingredients.getCount())
+                            .append(" ").append(ingredients.getMeasure())
+                            .append("\n");
+                }
+                StringBuilder steps = new StringBuilder();
+                for (String stepsFromList : recipeFromMap.getSteps()) {
+                    steps.append("\n").append(stepsFromList.replace("[", "-"));
+                }
+                writer
+                        .append(recipeFromMap.getName())
+                        .append(": времмя приготовления ")
+                        .append(String.valueOf(recipeFromMap.getTimeCooking()))
+                        .append("минут, \n")
+                        .append(String.valueOf(ingredient))
+                        .append(String.valueOf(steps))
+                        .append("\n");
+            }
+        }
+        return recipeTxt;
+    }
+
 }

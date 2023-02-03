@@ -10,6 +10,9 @@ import ru.recipe.app.recipeapp.services.FileService;
 import ru.recipe.app.recipeapp.services.IngredientService;
 
 import javax.annotation.PostConstruct;
+import java.io.FileNotFoundException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 @Service
@@ -60,11 +63,16 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     private void readFromFile() {
-        String json = fileService.readFile(ingredientFileName);
         try {
-            ingredientMap = new ObjectMapper().readValue(json, new TypeReference<HashMap<Integer, Ingredients>>() {
-            });
-        } catch (JsonProcessingException e) {
+            if (Files.exists(Path.of(ingredientFileName))) {
+
+                String json = fileService.readFile(ingredientFileName);
+                ingredientMap = new ObjectMapper().readValue(json, new TypeReference<HashMap<Integer, Ingredients>>() {
+                });
+            } else {
+                throw new FileNotFoundException();
+            }
+        } catch (JsonProcessingException | FileNotFoundException e) {
             e.printStackTrace();
         }
     }
